@@ -3,6 +3,7 @@ import { _routeList } from '@/const'
 import { store } from '@/store'
 import { computed, defineComponent } from 'vue'
 import { RouterLink } from 'vue-router'
+import SearchComponent from '../search-component'
 import './header.sass'
 
 export default defineComponent({
@@ -17,6 +18,7 @@ export default defineComponent({
                 <LogoMain />
               </RouterLink>
             </div>
+            <SearchComponent/>
             <div class='header-right'>
               <p>{fullName.value}</p>
             </div>

@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors
@@ -18,6 +19,12 @@ import { UserService } from './user.service'
 @Controller('/api/user')
 export class UserController {
   constructor(private readonly service: UserService) {}
+
+  @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
+  findAllUser(@Query() query) {
+    return this.service.findAllUser(query)
+  }
 
   @Get('/me')
   @UseGuards(AuthGuard)
