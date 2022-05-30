@@ -1,0 +1,177 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic)
+@import './reset'
+@import './vars'
+
+@for $i from 2 through 6
+  .primary-grid-#{$i}
+    display: grid
+    grid-template-columns: repeat($i, 1fr)
+    grid-column-gap: 2*$step
+    grid-row-gap: 2*$step
+
+@for $i from 1 through 5
+  .m-#{$i}
+    margin: $i*$step
+  .mh-#{$i}
+    margin-left: $i*$step
+    margin-right: $i*$step
+  .mv-#{$i}
+    margin-top: $i*$step
+    margin-bottom: $i*$step
+  .mb-#{$i}
+    margin-bottom: $i*$step
+  .mt-#{$i}
+    margin-top: $i*$step
+  .ml-#{$i}
+    margin-left: $i*$step
+  .mr-#{$i}
+    margin-right: $i*$step
+  .p-#{$i}
+    padding: $i*$step
+  .ph-#{$i}
+    padding-left: $i*$step
+    padding-right: $i*$step
+  .pv-#{$i}
+    padding-top: $i*$step
+    padding-bottom: $i*$step
+  .pb-#{$i}
+    padding-bottom: $i*$step
+  .pt-#{$i}
+    padding-top: $i*$step
+  .pl-#{$i}
+    padding-left: $i*$step
+  .pr-#{$i}
+    padding-right: $i*$step
+
+body
+  font-family: Roboto
+  background: $l-body-color
+  &.dark
+    background: $d-body-color
+
+.light
+  color: $l-font-color
+  background: $l-body-color
+
+.dark
+  color: $d-font-color
+  background: $d-body-color
+
+.light, .dark
+  font-size: $font-size
+
+.container
+  max-width: 1020px
+  margin: 0 auto
+  padding: 0 20px
+
+.screen
+  padding-top: calc($button-height + 20px)
+  min-height: 100vh
+  overflow: hidden
+
+.jcac-flex
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+a
+  transition: $time
+  &.router-link-active
+    color: $primary-color
+
+.default-button
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 0 16px
+  height: $button-height
+  cursor: pointer
+  font-weight: 500
+  transition: $time
+  border-radius: $sm-radius
+  max-width: max-content
+  &:disabled
+    cursor: default
+    filter: brightness(110%)
+    &:hover
+      filter: brightness(110%)
+  &:hover
+    filter: brightness(90%)
+
+.primary-button
+  @extend .default-button
+  background-color: $primary-color
+
+.dark
+  .default-button
+    background-color: $l-secondary-color
+  .primary-button
+    background-color: $primary-color
+.light
+  .default-button
+    background-color: $l-secondary-color
+  .primary-button
+    background-color: $primary-color
+
+.default-input
+  position: relative
+  display: flex
+  flex-direction: column
+  max-width: max-content
+  min-width: 300px
+  margin-bottom: 50px
+  .default-input-placeholder
+    position: absolute
+    left: 0
+    top: calc(100% - $font-size - 8px)
+    transition: $time
+  .default-input-error
+    position: absolute
+    top: calc(100% + 8px)
+    color: $error-color
+    font-size: 12px
+  input
+    background: transparent
+    padding: 20px 8px 4px 0
+    transition: $time
+
+  &.not-empty
+    .default-input-placeholder
+      font-size: 12px
+      top: 0
+
+  &.with-error
+    input
+      border-color: $error-color
+
+  &.with-lenght-limit
+    .length-counter
+      position: absolute
+      top: calc(100% - $font-size - 8px)
+      right: 0
+      font-size: 12px
+      transition: $time
+    input
+      padding-right: 60px
+
+.dark
+  .default-input
+    color: $d-font-color
+    input
+      border-bottom: 1px solid $l-secondary-color
+    &:focus-within
+      color: $primary-color
+      input
+        border-color: $primary-color
+
+
+.light
+  .default-input
+    color: $l-font-color
+    input
+      border-bottom: 1px solid $d-secondary-color
+    &:focus-within
+      color: $primary-color
+      input
+        border-color: $primary-color

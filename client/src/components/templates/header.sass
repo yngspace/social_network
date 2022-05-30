@@ -1,0 +1,19 @@
+@import '@/styles/vars.sass'
+
+.header
+  position: fixed
+  top: 0
+  width: 100%
+  height: $header-height
+  .container, .header-wrap
+    height: 100%
+.dark
+  .header
+    background: $d-block-background
+.light
+  .header
+    background: $l-block-background
+
+.header-auth
+  .nav-list
+    column-gap: 20px
