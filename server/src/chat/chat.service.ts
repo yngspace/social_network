@@ -1,9 +1,10 @@
 import { HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { isUUID } from 'class-validator'
+import { MessageEntity } from 'src/message/message.entity'
 import { throwHttpException } from 'src/pipes/validation.pipe'
 import { UserService } from 'src/user/user.service'
-import { Repository } from 'typeorm'
+import { getRepository, IsNull, Not, Repository } from 'typeorm'
 import { ChatEntity } from './chat.entity'
 
 const serializer = (items: ChatEntity[]) => {
@@ -26,7 +27,7 @@ export class ChatService {
   constructor(
     @InjectRepository(ChatEntity)
     private readonly repository: Repository<ChatEntity>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
   ) {}
 
   async findAllChats(id: string, query) {
@@ -39,7 +40,7 @@ export class ChatService {
     const [results, count] = await this.repository.findAndCount({
       take: perPage,
       skip: page === 1 ? 0 : (page - 1) * perPage,
-      where: { users: user },
+      where: { users: user, message: Not(IsNull) },
       order: { updatedAtt: 'DESC' }
     })
 
@@ -53,8 +54,50 @@ export class ChatService {
     }
   }
 
-  async findByChatId(chatId, userId) {
+  async findAndPagination(chat: ChatEntity, query) {
+    const page = parseInt(query.page) || 1
+    const perPage = parseInt(query.perPage) || 20
+    const [results, count] = await getRepository(MessageEntity).findAndCount({
+      where: { chat },
+      take: perPage,
+      skip: page === 1 ? 0 : (page - 1) * perPage,
+      order: { createdAtt: 'DESC' },
+      relations: ['user']
+    })
+
+    return {
+      count,
+      next: count > (page * perPage),
+      prev: page !== 1 ? true : false,
+      page,
+      perPage,
+      results: results.map(item => {
+        return {
+          ...item,
+          user: {
+            id: item.user.id,
+            firstName: item.user.firstName,
+            lastName: item.user.lastName
+          }
+        }
+      })
+    }
+  }
+
+  async findByChatIdWithMessages(chatId, query) {
+    const chat = await this.findByChatId(chatId)
+    const message = await this.findAndPagination(chat, query)
+    return {
+      chat,
+      message
+    }
+  }
+
+  async findByChatId(chatId) {
     const chat = await this.repository.findOne({ where: { id: chatId } })
+    if (!chat) {
+      throwHttpException(HttpStatus.NOT_FOUND, 'Не найдено')
+    }
     return chat
   }
 

@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { UserModule } from './user/user.module'
 import { EventModule } from './events/event.module'
 import { ChatModule } from './chat/chat.module'
+import { MessageModule } from './message/message.module'
 
 @Global()
 @Module({
@@ -35,6 +36,7 @@ import { ChatModule } from './chat/chat.module'
     }),
     UserModule,
     ChatModule,
+    MessageModule,
     EventModule
   ],
   exports: [JwtModule]

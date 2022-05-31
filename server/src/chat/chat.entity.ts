@@ -1,10 +1,13 @@
 import { Exclude } from 'class-transformer'
+import { MessageEntity } from 'src/message/message.entity'
 import { UserEntity } from 'src/user/user.entity'
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
 
@@ -22,4 +25,7 @@ export class ChatEntity {
   @ManyToMany(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE', eager: true })
   @JoinTable()
   users: UserEntity[]
+
+  @OneToMany(() => MessageEntity, (message) => message.id, { onDelete: 'CASCADE' })
+  message: MessageEntity[]
 }

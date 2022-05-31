@@ -27,9 +27,9 @@ export class ChatController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  findByChatId(@Param() { id }, @Req() { user }) {
-    const userId = user.id
-    return this.service.findByChatId(id, userId)
+  @UseInterceptors(ClassSerializerInterceptor)
+  findByChatId(@Param() { id }, @Query() query) {
+    return this.service.findByChatIdWithMessages(id, query)
   }
 
   @Post(':id')
