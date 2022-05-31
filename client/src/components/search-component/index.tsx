@@ -31,6 +31,7 @@ export default defineComponent({
     const outsideCallback = () => {
       if (!model.value.trim()) return
       model.value = ''
+      searchList.value = new PaginationType()
     }
 
     useClickOutside(rootElement, outsideCallback)
@@ -42,7 +43,6 @@ export default defineComponent({
           placeholder='Поиск'
           onValueChange={(v: string) => onValueChange(v)}
         />
-        <SearchIcon />
         {model.value.trim() !== '' && <div class='search-list'>
           {searchList.value.results.map(item =>
             <span class='search-item'>{`${item.firstName} ${item.lastName}`}</span>

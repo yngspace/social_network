@@ -1,7 +1,9 @@
 import { Exclude } from 'class-transformer'
+import { ChatEntity } from 'src/chat/chat.entity'
 import {
   Column,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
 
@@ -31,4 +33,7 @@ export class UserEntity {
   })
   @Exclude()
   password: string
+
+  @ManyToMany(() => ChatEntity, (chat) => chat.id, { onDelete: 'CASCADE' })
+  chats: ChatEntity[]
 }

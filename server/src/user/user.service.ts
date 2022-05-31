@@ -43,6 +43,10 @@ export class UserService {
 
     return {
       count,
+      next: count > (page * perPage),
+      prev: page !== 1 ? true : false,
+      page,
+      perPage,
       results
     }
   }
